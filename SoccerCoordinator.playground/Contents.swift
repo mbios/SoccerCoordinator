@@ -1,13 +1,6 @@
-//: Playground - noun: a place where people can play
-
-import UIKit
-
-var str = "Hello, playground"
-
-// teams: Dragons, Sharks, and Raptors.
-// 18 children split evenly
-// Name, height (in inches), whether or not they have played soccer before, and their guardians’ names.
-
+var teamDragons: [[String: Any]] = []
+var teamSharks: [[String: Any]] = []
+var teamRaptors: [[String: Any]] = []
 var players: [[String: Any]] = []
 
 players.append([
@@ -45,7 +38,6 @@ players.append([
     "height": 41,
     "experience": false,
     "guardian": "Bill and Hillary Stein"])
-
 
 players.append([
     "name": "Sammy Adams",
@@ -119,9 +111,43 @@ players.append([
     "experience": true,
     "guardian": "Hyman and Rachel Krustofski"])
 
-for player in players {
-    print(player["name"])
+for (i, player) in players.enumerated().reversed() {
+    if (player["experience"] as! Bool) {
+        switch (players.count % 3) {
+        case 0: teamDragons += [players.remove(at: i)]
+        case 1: teamSharks += [players.remove(at: i)]
+        default: teamRaptors += [players.remove(at: i)]
+        }
+    }
 }
 
+for (i, player) in players.enumerated().reversed() {
+    switch (players.count % 3) {
+    case 0: teamDragons += [players.remove(at: i)]
+    case 1: teamSharks += [players.remove(at: i)]
+    default: teamRaptors += [players.remove(at: i)]
+    }
+}
 
+func createLettersFor(players: [[String: Any]], teamName: String, matchDate: String) -> [String] {
+    var letters: [String] = []
+    for player in players {
+        letters.append(createLetterFor(player: player, teamName: teamName, matchDate: matchDate))
+    }
+    return letters
+}
 
+func createLetterFor(player: [String: Any], teamName: String, matchDate: String) -> String {
+    let guardian = player["guardian"] as! String
+    let playerName = player["name"] as! String
+    return "Dear \(guardian), \(playerName) is on \(teamName) with the first match on \(matchDate)"
+}
+
+var letters: [String] = []
+letters += createLettersFor(players: teamDragons, teamName: "Dragons", matchDate: "March 17, 1pm")
+letters += createLettersFor(players: teamDragons, teamName: "Sharks", matchDate: "March 17, 3pm")
+letters += createLettersFor(players: teamDragons, teamName: "Raptors", matchDate: "March 18, 1pm")
+
+for letter in letters {
+    print(letter)
+}
