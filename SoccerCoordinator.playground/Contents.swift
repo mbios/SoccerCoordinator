@@ -111,23 +111,20 @@ players.append([
     "experience": true,
     "guardian": "Hyman and Rachel Krustofski"])
 
-for (i, player) in players.enumerated().reversed() {
-    if (player["experience"] as! Bool) {
-        switch (players.count % 3) {
-        case 0: teamDragons += [players.remove(at: i)]
-        case 1: teamSharks += [players.remove(at: i)]
-        default: teamRaptors += [players.remove(at: i)]
+func distributePlayers(withExperience: Bool) {
+    for (i, player) in players.enumerated().reversed() {
+        if (player["experience"] as! Bool == withExperience) {
+            switch (players.count % 3) {
+            case 0: teamDragons += [players.remove(at: i)]
+            case 1: teamSharks += [players.remove(at: i)]
+            default: teamRaptors += [players.remove(at: i)]
+            }
         }
     }
 }
 
-for (i, player) in players.enumerated().reversed() {
-    switch (players.count % 3) {
-    case 0: teamDragons += [players.remove(at: i)]
-    case 1: teamSharks += [players.remove(at: i)]
-    default: teamRaptors += [players.remove(at: i)]
-    }
-}
+distributePlayers(withExperience: true)
+distributePlayers(withExperience: false)
 
 func createLettersFor(players: [[String: Any]], teamName: String, matchDate: String) -> [String] {
     var letters: [String] = []
@@ -145,8 +142,8 @@ func createLetterFor(player: [String: Any], teamName: String, matchDate: String)
 
 var letters: [String] = []
 letters += createLettersFor(players: teamDragons, teamName: "Dragons", matchDate: "March 17, 1pm")
-letters += createLettersFor(players: teamDragons, teamName: "Sharks", matchDate: "March 17, 3pm")
-letters += createLettersFor(players: teamDragons, teamName: "Raptors", matchDate: "March 18, 1pm")
+letters += createLettersFor(players: teamSharks, teamName: "Sharks", matchDate: "March 17, 3pm")
+letters += createLettersFor(players: teamRaptors, teamName: "Raptors", matchDate: "March 18, 1pm")
 
 for letter in letters {
     print(letter)
